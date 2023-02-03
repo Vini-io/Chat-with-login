@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --rd20: 20px;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #4002BB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 40rem;
+    height: 36rem;
+    border-radius: var(--rd20);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.form_login {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    margin-bottom: 60px;
+    padding: 15px 10px;
+    width: 55%;
+    border-radius: var(--rd20);
+    font-family: 'Poppins', sans-serif;
+
+}
+#password{
+    margin-bottom: 70px;
+}
+
+button {
+    margin-top: 20px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--rd20);
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 2px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:hover {
+    background-color: #4002BB;
+    color: #fff;
+}
+
+</style>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="form_login">
+            <input id="email" type="email" name="email" placeholder="Email">
+            <input id="password" type="password" name="password" placeholder="Password">
+            <button class="btn">Entar</button>
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+
+        document.querySelector(".btn").addEventListener("click", async () => {
+
+            let email = document.querySelector("#email").value
+            let password = document.querySelector("#password").value
+
+
+            const user = {
+                email: email,
+                password: password
+            }
+
+            const init = {
+                method: 'POST',
+                headers: new Headers({ 'content-type': 'application/json' }),
+                body: JSON.stringify(user)
+            }
+
+            let res = await fetch('http://localhost:3000/login', init)
+
+            if (!res.ok) alert("Email ou senha incorreta.")
+            else {
+                let token = await res.json()
+                localStorage.setItem("TOKEN", token.token)
+                window.location.href = "/"
+            }
+
+
+        })
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>

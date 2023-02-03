@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --rd20: 20px;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #4002BB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 40rem;
+    height: 36rem;
+    border-radius: var(--rd20);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.form_register {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    margin-bottom: 50px;
+    padding: 15px 10px;
+    width: 55%;
+    border-radius: var(--rd20);
+    font-family: 'Poppins', sans-serif;
+
+}
+#password{
+    margin-bottom: 10px;
+
+}
+
+button {
+    margin-top: 20px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--rd20);
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 2px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:hover {
+    background-color: #4002BB;
+    color: #fff;
+}
+</style>
+
+<body>
+
+    <div class="container">
+
+        <div class="form_register">
+            <input id="name" type="text" name="name" placeholder="Nome">
+            <input id="email" type="email" name="email" placeholder="Email">
+            <input id="password" type="password" name="password" placeholder="Password">
+            <input id="passwordConfirm" type="password" placeholder="Confirmar">
+            <button class="btn">Cadastrar</button>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <script>
+        document.querySelector(".btn").addEventListener("click", async () => {
+
+            let name = document.querySelector('#name').value
+            let email = document.querySelector('#email').value
+            let password = document.querySelector('#password').value
+            let passwordConfirm = document.querySelector('#passwordConfirm').value
+
+
+            if (password === passwordConfirm) {
+
+                let user = {
+                    name: name,
+                    email: email,
+                    password: password
+                }
+
+                const init = {
+                    method: 'POST',
+                    headers: new Headers({ 'content-type': 'application/json' }),
+                    body: JSON.stringify(user)
+                }
+
+                fetch('http://localhost:3000/register', init).then(res => {
+                    if (!res.ok) {
+                        if (res.status == 401) alert("Email ja cadastrado")
+                        else if (res.status == 400) alert("Email inválido")
+                    } else window.location.href = "/login"
+
+                })
+            } else {
+                alert("senha incorreta")
+            }
+        })
+    </script>
+
+</body>
+
+</html>
